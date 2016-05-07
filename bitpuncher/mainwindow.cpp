@@ -4,6 +4,7 @@
 #include <QIODevice>
 #include <QFileDialog>
 #include <QDir>
+#include <QMessageBox>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -94,7 +95,11 @@ void MainWindow::onActionNew()
         ui->frameSlider->setValue(0);
 
         ui->copyToPrev->setEnabled(false);
-        ui->copyToNext->setEnabled(true);
+        if (dialog.getFrames() > 1) {
+            ui->copyToNext->setEnabled(true);
+        } else {
+            ui->copyToNext->setEnabled(false);
+        }
     } else {
         std::cerr << "Rejected" << std::endl;
     }
@@ -118,7 +123,10 @@ void MainWindow::onActionOpen()
     in >> magic;
 
     if (magic != 0xDEADBEEF) {
-        std::cerr << "File is corrupted" << std::endl;
+        QMessageBox errorDialog;
+        errorDialog.setText("Cannot open file " + fileName + ": bad magic");
+        errorDialog.setIcon(QMessageBox::Critical);
+        errorDialog.exec();
         return;
     }
 
