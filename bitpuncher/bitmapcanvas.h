@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#define MAX_ROWS    20
+#define MAX_ROWS    100
 #define MAX_COLS    200
 
 class BitmapCanvas : public QWidget

@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     clearFrames();
 
     ui->setupUi(this);
+
+    onActionNew();
 }
 
 MainWindow::~MainWindow()
@@ -51,6 +53,20 @@ void MainWindow::onFrameSliderChanged(int value)
     std::cerr << value << std::endl;
 }
 
+void MainWindow::onPrevFrameClicked()
+{
+    if (ui->frameSlider->value() > 0) {
+        ui->frameSlider->setValue(ui->frameSlider->value() - 1);
+    }
+}
+
+void MainWindow::onNextFrameClicked()
+{
+    if (ui->frameSlider->value() < ui->frameSlider->maximum()) {
+        ui->frameSlider->setValue(ui->frameSlider->value() + 1);
+    }
+}
+
 void MainWindow::onActionNew()
 {
     NewPaintDialog dialog(this);
@@ -60,6 +76,7 @@ void MainWindow::onActionNew()
         clearFrames();
         ui->bitmapCanvas->setSize(dialog.getCols(), dialog.getRows());
         lastFrameIndex = 0;
+        ui->frameSlider->setMaximum(dialog.getFrames());
         ui->frameSlider->setValue(0);
     } else {
         std::cerr << "Rejected" << std::endl;

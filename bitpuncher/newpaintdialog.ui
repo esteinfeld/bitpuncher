@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New Project</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -27,6 +27,9 @@
       <widget class="QSpinBox" name="rows">
        <property name="minimum">
         <number>4</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
        </property>
        <property name="value">
         <number>8</number>
@@ -48,6 +51,9 @@
        <property name="maximum">
         <number>200</number>
        </property>
+       <property name="value">
+        <number>50</number>
+       </property>
       </widget>
      </item>
      <item row="2" column="0">
@@ -64,6 +70,9 @@
        </property>
        <property name="maximum">
         <number>200</number>
+       </property>
+       <property name="value">
+        <number>10</number>
        </property>
       </widget>
      </item>
@@ -90,8 +99,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>193</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -106,8 +115,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>193</x>
+     <y>160</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

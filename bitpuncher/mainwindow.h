@@ -5,7 +5,7 @@
 
 #include "bitmapcanvas.h"
 
-#define MAX_FRAMES      100
+#define MAX_FRAMES      200
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +22,8 @@ public:
 public slots:
     void onFrameSliderChanged(int);
     void onActionNew();
+    void onPrevFrameClicked();
+    void onNextFrameClicked();
 
 private:
     void copyCurrentFrame(int);

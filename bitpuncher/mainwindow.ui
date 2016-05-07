@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>347</width>
-    <height>320</height>
+    <width>555</width>
+    <height>387</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,6 +33,20 @@
         </property>
         <property name="text">
          <string>Frame</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="framePrev">
+        <property name="text">
+         <string>&lt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="frameNext">
+        <property name="text">
+         <string>&gt;</string>
         </property>
        </widget>
       </item>
@@ -77,7 +91,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>347</width>
+     <width>555</width>
      <height>22</height>
     </rect>
    </property>
@@ -152,12 +166,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>82</x>
-     <y>226</y>
+     <x>139</x>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
-     <x>309</x>
-     <y>233</y>
+     <x>513</x>
+     <y>270</y>
     </hint>
    </hints>
   </connection>
@@ -169,7 +183,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>148</x>
-     <y>228</y>
+     <y>267</y>
     </hint>
     <hint type="destinationlabel">
      <x>152</x>
@@ -193,6 +207,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>framePrev</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onPrevFrameClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>76</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>frameNext</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onNextFrameClicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>264</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>237</x>
+     <y>185</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onFrameSliderChanged(int)</slot>
@@ -200,5 +246,7 @@
   <slot>onActionOpen()</slot>
   <slot>onActionSave()</slot>
   <slot>onActionExport()</slot>
+  <slot>onPrevFrameClicked()</slot>
+  <slot>onNextFrameClicked()</slot>
  </slots>
 </ui>
