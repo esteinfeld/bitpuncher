@@ -16,6 +16,8 @@ public:
     ~NewPaintDialog();
 
     int getRows();
+    int getCols();
+    int getFrames();
 
 private:
     Ui::NewPaintDialog *ui;

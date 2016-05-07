@@ -17,3 +17,13 @@ int NewPaintDialog::getRows()
 {
     return ui->rows->value();
 }
+
+int NewPaintDialog::getCols()
+{
+    return ui->cols->value();
+}
+
+int NewPaintDialog::getFrames()
+{
+    return ui->frames->value();
+}
