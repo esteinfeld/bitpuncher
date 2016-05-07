@@ -2,8 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
-#include "bitmapcanvas.h"
+#include <QImage>
 
 #define MAX_FRAMES      200
 
@@ -35,10 +34,10 @@ public slots:
 private:
     void copyCurrentFrame(int);
     void restoreFrame(int);
-    void clearFrames();
+    void initFrames(int, int, int);
 
     Ui::MainWindow *ui;
-    bool mFrames[MAX_FRAMES][MAX_COLS][MAX_ROWS];
+    QVector<QImage> mFrames;
     int lastFrameIndex;
 };
 

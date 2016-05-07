@@ -83,14 +83,14 @@ int BitmapCanvas::getRows()
     return mRows;
 }
 
-int BitmapCanvas::getPixel(int col, int row)
+const QImage& BitmapCanvas::getBitmap()
 {
-    return mBitmap.pixelIndex(col, row);
+    return mBitmap;
 }
 
-void BitmapCanvas::setPixel(int col, int row, int value)
+void BitmapCanvas::setBitmap(const QImage& bitmap)
 {
-    mBitmap.setPixel(col, row, value);
+    mBitmap = QImage(bitmap);
 }
 
 void BitmapCanvas::clear()

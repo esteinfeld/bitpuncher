@@ -2,6 +2,8 @@
 #include <QFile>
 #include <QDataStream>
 #include <QIODevice>
+#include <QFileDialog>
+#include <QDir>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -12,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     lastFrameIndex(0)
 {
-    clearFrames();
-
     ui->setupUi(this);
 
     onActionNew();
@@ -26,26 +26,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::copyCurrentFrame(int target)
 {
-    for (int row=0 ; row < ui->bitmapCanvas->getRows() ; ++row) {
-        for (int col=0 ; col < ui->bitmapCanvas->getCols() ; ++col) {
-            mFrames[target][col][row] = ui->bitmapCanvas->getPixel(col, row);
-        }
-    }
+    mFrames[target] = QImage(ui->bitmapCanvas->getBitmap());
 }
 
 void MainWindow::restoreFrame(int source)
 {
-    for (int row=0 ; row < ui->bitmapCanvas->getRows() ; ++row) {
-        for (int col=0 ; col < ui->bitmapCanvas->getCols() ; ++col) {
-            ui->bitmapCanvas->setPixel(col, row, mFrames[source][col][row]);
-        }
-    }
+    ui->bitmapCanvas->setBitmap(mFrames[source]);
     ui->bitmapCanvas->repaint();
 }
 
-void MainWindow::clearFrames()
+void MainWindow::initFrames(int count, int cols, int rows)
 {
-    memset(&mFrames, 0, sizeof(mFrames));
+    mFrames.clear();
+
+    for (int i=0 ; i < count ; ++i) {
+        QImage img(cols, rows, QImage::Format_Mono);
+        img.fill(0);
+        mFrames.append(img);
+    }
+
+    std::cerr << "Init'd " << mFrames.count() << " frames";
 }
 
 void MainWindow::onFrameSliderChanged(int value)
@@ -65,8 +65,6 @@ void MainWindow::onFrameSliderChanged(int value)
     } else {
         ui->copyToNext->setEnabled(true);
     }
-
-    std::cerr << value << std::endl;
 }
 
 void MainWindow::onPrevFrameClicked()
@@ -89,10 +87,10 @@ void MainWindow::onActionNew()
     dialog.setModal(true);
 
     if (dialog.exec()) {
-        clearFrames();
+        initFrames(dialog.getFrames(), dialog.getCols(), dialog.getRows());
         ui->bitmapCanvas->setSize(dialog.getCols(), dialog.getRows());
         lastFrameIndex = 0;
-        ui->frameSlider->setMaximum(dialog.getFrames());
+        ui->frameSlider->setMaximum(dialog.getFrames() - 1);
         ui->frameSlider->setValue(0);
 
         ui->copyToPrev->setEnabled(false);
@@ -104,7 +102,15 @@ void MainWindow::onActionNew()
 
 void MainWindow::onActionOpen()
 {
-    QFile file("/Users/xi/Desktop/merda.dat");
+    QString fileName = QFileDialog::getOpenFileName(this, "Open BitPuncher data file",
+                                                    QDir::homePath(), "BitPuncher data files (*.bpd)");
+
+    if (fileName == "") {
+        return;
+    }
+
+    QFile file(fileName);
+
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
 
@@ -118,38 +124,51 @@ void MainWindow::onActionOpen()
 
     in.setVersion(QDataStream::Qt_4_0);
 
-    int cols, rows, framesCount;
+    int cols, rows, maxIndex;
     in >> cols;
     in >> rows;
-    in >> framesCount;
-    //in >> mFrames;
+    in >> maxIndex;
+    in >> mFrames;
 
-    /*
     ui->bitmapCanvas->setSize(cols, rows);
     lastFrameIndex = 0;
-    ui->frameSlider->setMaximum(dialog.getFrames());
+    ui->frameSlider->setMaximum(maxIndex);
     ui->frameSlider->setValue(0);
+    restoreFrame(0);
 
     ui->copyToPrev->setEnabled(false);
     ui->copyToNext->setEnabled(true);
-    */
 
-    std::cerr << "Imported " << framesCount << " frames" << std::endl;
+    statusBar()->showMessage("Successfully loaded " + QString::number(maxIndex + 1) +
+                             " frames from " + fileName, 20000);
 }
 
 void MainWindow::onActionSave()
 {
-    QFile file("/Users/xi/Desktop/merda.dat");
+    QString fileName = QFileDialog::getSaveFileName(this, "Save BitPuncher data file",
+                                                    QDir::homePath(), "BitPuncher data files (*.bpd)");
+
+    if (fileName == "") {
+        return;
+    }
+
+    QFile file(fileName);
+
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);
+
+    copyCurrentFrame(lastFrameIndex);
 
     out << (quint32)0xDEADBEEF;
     out << ui->bitmapCanvas->getCols();
     out << ui->bitmapCanvas->getRows();
     out << ui->frameSlider->maximum();
-    //out << mFrames;
+    out << mFrames;
 
     out.setVersion(QDataStream::Qt_4_0);
+
+    statusBar()->showMessage("Successfully saved " + QString::number(ui->frameSlider->maximum() + 1) +
+                             " frames to " + fileName, 20000);
 }
 
 void MainWindow::onClearCurrentFrame()

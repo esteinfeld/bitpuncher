@@ -4,9 +4,6 @@
 #include <QWidget>
 #include <QImage>
 
-#define MAX_ROWS    100
-#define MAX_COLS    200
-
 class BitmapCanvas : public QWidget
 {
     Q_OBJECT
@@ -17,8 +14,8 @@ public:
     int getCols();
     int getRows();
 
-    int getPixel(int col, int row);
-    void setPixel(int col, int row, int value);
+    const QImage& getBitmap();
+    void setBitmap(const QImage&);
     void clear();
 
 protected:
