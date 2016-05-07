@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include "bitmapcanvas.h"
+
+#define MAX_FRAMES      100
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,7 +24,13 @@ public slots:
     void onActionNew();
 
 private:
+    void copyCurrentFrame(int);
+    void restoreFrame(int);
+    void clearFrames();
+
     Ui::MainWindow *ui;
+    bool mFrames[MAX_FRAMES][MAX_COLS][MAX_ROWS];
+    int lastFrameIndex;
 };
 
 #endif // MAINWINDOW_H

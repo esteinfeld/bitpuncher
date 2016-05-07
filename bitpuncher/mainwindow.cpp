@@ -6,10 +6,12 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    lastFrameIndex(0)
 {
+    clearFrames();
+
     ui->setupUi(this);
-    ui->bitmapCanvas->setSize(40, 10);
 }
 
 MainWindow::~MainWindow()
@@ -17,8 +19,35 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::copyCurrentFrame(int target)
+{
+    for (int row=0 ; row < ui->bitmapCanvas->getRows() ; ++row) {
+        for (int col=0 ; col < ui->bitmapCanvas->getCols() ; ++col) {
+            mFrames[target][col][row] = ui->bitmapCanvas->getPixel(col, row);
+        }
+    }
+}
+
+void MainWindow::restoreFrame(int source)
+{
+    for (int row=0 ; row < ui->bitmapCanvas->getRows() ; ++row) {
+        for (int col=0 ; col < ui->bitmapCanvas->getCols() ; ++col) {
+            ui->bitmapCanvas->setPixel(col, row, mFrames[source][col][row]);
+        }
+    }
+    ui->bitmapCanvas->repaint();
+}
+
+void MainWindow::clearFrames()
+{
+    memset(&mFrames, 0, sizeof(mFrames));
+}
+
 void MainWindow::onFrameSliderChanged(int value)
 {
+    copyCurrentFrame(lastFrameIndex);
+    restoreFrame(value);
+    lastFrameIndex = value;
     std::cerr << value << std::endl;
 }
 
@@ -26,10 +55,13 @@ void MainWindow::onActionNew()
 {
     NewPaintDialog dialog(this);
     dialog.setModal(true);
+
     if (dialog.exec()) {
-        std::cerr << "Exiting now " << dialog.getRows() << std::endl;
+        clearFrames();
+        ui->bitmapCanvas->setSize(dialog.getCols(), dialog.getRows());
+        lastFrameIndex = 0;
+        ui->frameSlider->setValue(0);
     } else {
         std::cerr << "Rejected" << std::endl;
     }
-
 }
