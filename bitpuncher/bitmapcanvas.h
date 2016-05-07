@@ -2,6 +2,7 @@
 #define BITMAPCANVAS_H
 
 #include <QWidget>
+#include <QImage>
 
 #define MAX_ROWS    100
 #define MAX_COLS    200
@@ -16,8 +17,8 @@ public:
     int getCols();
     int getRows();
 
-    bool getPixel(int col, int row);
-    void setPixel(int col, int row, bool value);
+    int getPixel(int col, int row);
+    void setPixel(int col, int row, int value);
     void clear();
 
 protected:
@@ -32,7 +33,7 @@ private:
     int mCols;
     int mRows;
 
-    bool mBitmap[MAX_COLS][MAX_ROWS];
+    QImage mBitmap;
 };
 
 #endif // BITMAPCANVAS_H

@@ -25,7 +25,7 @@ void BitmapCanvas::paintEvent(QPaintEvent *)
 
     for (int row=0 ; row < mRows ; ++row) {
         for (int col=0 ; col < mCols ; ++col) {
-            if (mBitmap[col][row]) {
+            if (mBitmap.pixelIndex(col, row)) {
                 float x = col * (size().width() / mCols);
                 float y = row * (size().height() / mRows);
 
@@ -53,9 +53,9 @@ void BitmapCanvas::mousePressEvent(QMouseEvent *event)
     std::cerr << "Mousy row=" << row << " y=" << col << std::endl;
 
     if (event->button() == Qt::LeftButton) {
-        mBitmap[col][row] = 1;
+        mBitmap.setPixel(col, row, 1);
     } else if (event->button() == Qt::RightButton) {
-        mBitmap[col][row] = 0;
+        mBitmap.setPixel(col, row, 0);
     }
     repaint();
 }
@@ -65,11 +65,9 @@ void BitmapCanvas::setSize(int cols, int rows)
     mCols = cols;
     mRows = rows;
 
-    for (int row=0 ; row < mRows ; ++row) {
-        for (int col=0 ; col < mCols ; ++col) {
-            mBitmap[col][row] = 0;
-        }
-    }
+    mBitmap = QImage(cols, rows, QImage::Format_Mono);
+    clear();
+
     setFixedSize(mCols * GRID_SIZE, mRows * GRID_SIZE);
 
     std::cerr << "Setting grid size to " << mCols << "x" << mRows << std::endl;
@@ -85,17 +83,17 @@ int BitmapCanvas::getRows()
     return mRows;
 }
 
-bool BitmapCanvas::getPixel(int col, int row)
+int BitmapCanvas::getPixel(int col, int row)
 {
-    return mBitmap[col][row];
+    return mBitmap.pixelIndex(col, row);
 }
 
-void BitmapCanvas::setPixel(int col, int row, bool value)
+void BitmapCanvas::setPixel(int col, int row, int value)
 {
-    mBitmap[col][row] = value;
+    mBitmap.setPixel(col, row, value);
 }
 
 void BitmapCanvas::clear()
 {
-    memset(&mBitmap, 0, sizeof(mBitmap));
+    mBitmap.fill(0);
 }
