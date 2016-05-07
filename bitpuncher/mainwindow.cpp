@@ -180,10 +180,14 @@ void MainWindow::onClearCurrentFrame()
 
 void MainWindow::onCopyToNextFrame()
 {
-    copyCurrentFrame(ui->frameSlider->value() + 1);
+    int newIndex = ui->frameSlider->value() + 1;
+    copyCurrentFrame(newIndex);
+    ui->frameSlider->setValue(newIndex);
 }
 
 void MainWindow::onCopyToPrevFrame()
 {
-    copyCurrentFrame(ui->frameSlider->value() - 1);
+    int newIndex = ui->frameSlider->value() - 1;
+    copyCurrentFrame(newIndex);
+    ui->frameSlider->setValue(newIndex);
 }
