@@ -46,8 +46,6 @@ void MainWindow::initFrames(int count, int cols, int rows)
         img.fill(0);
         mFrames.append(img);
     }
-
-    std::cerr << "Init'd " << mFrames.count() << " frames";
 }
 
 void MainWindow::onFrameSliderChanged(int value)
@@ -209,6 +207,31 @@ void MainWindow::onActionSave()
     } else {
         onActionSaveAs();
     }
+}
+
+void MainWindow::onActionImport()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, "Open image", QDir::homePath(),
+                                                    "Images (*.png *.xpm *.jpg)");
+
+    QImage img;
+    img.load(fileName);
+
+    if (img.size().width() != ui->bitmapCanvas->getCols() ||
+            img.size().height() != ui->bitmapCanvas->getRows()) {
+        QImage scaled = img.scaled(ui->bitmapCanvas->getCols(), ui->bitmapCanvas->getRows());
+        img = scaled;
+
+        QMessageBox warning;
+        warning.setText("Warning: the source has been scaled to the current project size");
+        warning.setIcon(QMessageBox::Warning);
+        warning.exec();
+    }
+
+    QImage converted = img.convertToFormat(QImage::Format_Mono);
+    img = converted;
+    ui->bitmapCanvas->setBitmap(img);
+    ui->bitmapCanvas->repaint();
 }
 
 void MainWindow::onClearCurrentFrame()

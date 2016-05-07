@@ -134,6 +134,7 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSaveAs"/>
+    <addaction name="actionImport"/>
     <addaction name="actionExport"/>
    </widget>
    <addaction name="menuFile"/>
@@ -185,6 +186,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="text">
+    <string>Import frame...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>
@@ -375,6 +384,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionImport</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onActionImport()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>277</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>onFrameSliderChanged(int)</slot>
@@ -388,5 +413,6 @@
   <slot>onCopyToNextFrame()</slot>
   <slot>onCopyToPrevFrame()</slot>
   <slot>onActionSaveAs()</slot>
+  <slot>onActionImport()</slot>
  </slots>
 </ui>
