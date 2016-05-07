@@ -19,70 +19,101 @@
      <widget class="BitmapCanvas" name="bitmapCanvas" native="true"/>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Animation controls</string>
       </property>
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Frame</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="framePrev">
-        <property name="text">
-         <string>&lt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="frameNext">
-        <property name="text">
-         <string>&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QSlider" name="frameSlider">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="currentFrame">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>30</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Frame</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="framePrev">
+           <property name="text">
+            <string>&lt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="frameNext">
+           <property name="text">
+            <string>&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="frameSlider">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="currentFrame">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>30</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="clearFrame">
+           <property name="text">
+            <string>Clear frame</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="copyToNext">
+           <property name="text">
+            <string>Copy to next</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="copyToPrev">
+           <property name="text">
+            <string>Copy to prev</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -166,12 +197,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>139</x>
-     <y>267</y>
+     <x>207</x>
+     <y>239</y>
     </hint>
     <hint type="destinationlabel">
-     <x>513</x>
-     <y>270</y>
+     <x>498</x>
+     <y>242</y>
     </hint>
    </hints>
   </connection>
@@ -182,8 +213,8 @@
    <slot>onFrameSliderChanged(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>148</x>
-     <y>267</y>
+     <x>216</x>
+     <y>239</y>
     </hint>
     <hint type="destinationlabel">
      <x>152</x>
@@ -230,12 +261,60 @@
    <slot>onNextFrameClicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>453</x>
-     <y>264</y>
+     <x>127</x>
+     <y>236</y>
     </hint>
     <hint type="destinationlabel">
      <x>237</x>
      <y>185</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearFrame</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onClearCurrentFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>314</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>357</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copyToNext</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onCopyToNextFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>284</x>
+     <y>319</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>245</x>
+     <y>362</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copyToPrev</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>onCopyToPrevFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>423</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>408</x>
+     <y>356</y>
     </hint>
    </hints>
   </connection>
@@ -248,5 +327,8 @@
   <slot>onActionExport()</slot>
   <slot>onPrevFrameClicked()</slot>
   <slot>onNextFrameClicked()</slot>
+  <slot>onClearCurrentFrame()</slot>
+  <slot>onCopyToNextFrame()</slot>
+  <slot>onCopyToPrevFrame()</slot>
  </slots>
 </ui>

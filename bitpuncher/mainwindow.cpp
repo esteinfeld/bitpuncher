@@ -50,6 +50,19 @@ void MainWindow::onFrameSliderChanged(int value)
     copyCurrentFrame(lastFrameIndex);
     restoreFrame(value);
     lastFrameIndex = value;
+
+    if (value > 0) {
+        ui->copyToPrev->setEnabled(true);
+    } else {
+        ui->copyToPrev->setEnabled(false);
+    }
+
+    if (value == ui->frameSlider->maximum()) {
+        ui->copyToNext->setEnabled(false);
+    } else {
+        ui->copyToNext->setEnabled(true);
+    }
+
     std::cerr << value << std::endl;
 }
 
@@ -78,7 +91,27 @@ void MainWindow::onActionNew()
         lastFrameIndex = 0;
         ui->frameSlider->setMaximum(dialog.getFrames());
         ui->frameSlider->setValue(0);
+
+        ui->copyToPrev->setEnabled(false);
+        ui->copyToNext->setEnabled(true);
     } else {
         std::cerr << "Rejected" << std::endl;
     }
+}
+
+void MainWindow::onClearCurrentFrame()
+{
+    ui->bitmapCanvas->clear();
+    copyCurrentFrame(lastFrameIndex);
+    ui->bitmapCanvas->repaint();
+}
+
+void MainWindow::onCopyToNextFrame()
+{
+    copyCurrentFrame(ui->frameSlider->value() + 1);
+}
+
+void MainWindow::onCopyToPrevFrame()
+{
+    copyCurrentFrame(ui->frameSlider->value() - 1);
 }

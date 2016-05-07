@@ -24,6 +24,9 @@ public slots:
     void onActionNew();
     void onPrevFrameClicked();
     void onNextFrameClicked();
+    void onClearCurrentFrame();
+    void onCopyToNextFrame();
+    void onCopyToPrevFrame();
 
 private:
     void copyCurrentFrame(int);
