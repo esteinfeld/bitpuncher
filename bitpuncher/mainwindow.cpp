@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    // TODO: prevent the initial dialog to abort, it'd leave a bunch of uninitialised members
     onActionNew();
 }
 
@@ -100,8 +101,21 @@ void MainWindow::onActionNew()
         } else {
             ui->copyToNext->setEnabled(false);
         }
+
+        setCurrentFile("");
+        statusBar()->clearMessage();
     } else {
         std::cerr << "Rejected" << std::endl;
+    }
+}
+
+void MainWindow::setCurrentFile(QString fileName)
+{
+    currentFile = fileName;
+    if (fileName != "") {
+        setWindowTitle("BitPuncher (" + fileName + ")");
+    } else {
+        setWindowTitle("BitPuncher");
     }
 }
 
@@ -147,19 +161,14 @@ void MainWindow::onActionOpen()
     ui->copyToPrev->setEnabled(false);
     ui->copyToNext->setEnabled(true);
 
+    setCurrentFile(fileName);
+
     statusBar()->showMessage("Successfully loaded " + QString::number(maxIndex + 1) +
-                             " frames from " + fileName, 20000);
+                             " frames from " + fileName, 5000);
 }
 
-void MainWindow::onActionSave()
+void MainWindow::saveToFile(QString fileName)
 {
-    QString fileName = QFileDialog::getSaveFileName(this, "Save BitPuncher data file",
-                                                    QDir::homePath(), "BitPuncher data files (*.bpd)");
-
-    if (fileName == "") {
-        return;
-    }
-
     QFile file(fileName);
 
     file.open(QIODevice::WriteOnly);
@@ -176,7 +185,30 @@ void MainWindow::onActionSave()
     out.setVersion(QDataStream::Qt_4_0);
 
     statusBar()->showMessage("Successfully saved " + QString::number(ui->frameSlider->maximum() + 1) +
-                             " frames to " + fileName, 20000);
+                             " frames to " + fileName, 5000);
+}
+
+void MainWindow::onActionSaveAs()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, "Save BitPuncher data file",
+                                                    QDir::homePath(), "BitPuncher data files (*.bpd)");
+
+    if (fileName == "") {
+        return;
+    }
+
+    saveToFile(fileName);
+
+    setCurrentFile(fileName);
+}
+
+void MainWindow::onActionSave()
+{
+    if (currentFile != "") {
+        saveToFile(currentFile);
+    } else {
+        onActionSaveAs();
+    }
 }
 
 void MainWindow::onClearCurrentFrame()

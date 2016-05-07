@@ -24,6 +24,7 @@ public slots:
     void onActionNew();
     void onActionOpen();
     void onActionSave();
+    void onActionSaveAs();
 
     void onPrevFrameClicked();
     void onNextFrameClicked();
@@ -39,6 +40,9 @@ private:
     Ui::MainWindow *ui;
     QVector<QImage> mFrames;
     int lastFrameIndex;
+    QString currentFile;
+    void saveToFile(QString fileName);
+    void setCurrentFile(QString fileName);
 };
 
 #endif // MAINWINDOW_H
