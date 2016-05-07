@@ -1,4 +1,7 @@
 #include <iostream>
+#include <QFile>
+#include <QDataStream>
+#include <QIODevice>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -97,6 +100,56 @@ void MainWindow::onActionNew()
     } else {
         std::cerr << "Rejected" << std::endl;
     }
+}
+
+void MainWindow::onActionOpen()
+{
+    QFile file("/Users/xi/Desktop/merda.dat");
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+
+    quint32 magic;
+    in >> magic;
+
+    if (magic != 0xDEADBEEF) {
+        std::cerr << "File is corrupted" << std::endl;
+        return;
+    }
+
+    in.setVersion(QDataStream::Qt_4_0);
+
+    int cols, rows, framesCount;
+    in >> cols;
+    in >> rows;
+    in >> framesCount;
+    //in >> mFrames;
+
+    /*
+    ui->bitmapCanvas->setSize(cols, rows);
+    lastFrameIndex = 0;
+    ui->frameSlider->setMaximum(dialog.getFrames());
+    ui->frameSlider->setValue(0);
+
+    ui->copyToPrev->setEnabled(false);
+    ui->copyToNext->setEnabled(true);
+    */
+
+    std::cerr << "Imported " << framesCount << " frames" << std::endl;
+}
+
+void MainWindow::onActionSave()
+{
+    QFile file("/Users/xi/Desktop/merda.dat");
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+
+    out << (quint32)0xDEADBEEF;
+    out << ui->bitmapCanvas->getCols();
+    out << ui->bitmapCanvas->getRows();
+    out << ui->frameSlider->maximum();
+    //out << mFrames;
+
+    out.setVersion(QDataStream::Qt_4_0);
 }
 
 void MainWindow::onClearCurrentFrame()

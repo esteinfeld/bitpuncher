@@ -21,7 +21,11 @@ public:
 
 public slots:
     void onFrameSliderChanged(int);
+
     void onActionNew();
+    void onActionOpen();
+    void onActionSave();
+
     void onPrevFrameClicked();
     void onNextFrameClicked();
     void onClearCurrentFrame();
