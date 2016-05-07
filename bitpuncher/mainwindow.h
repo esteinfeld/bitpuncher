@@ -15,10 +15,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void onFrameSliderChanged(int);
+    void onActionNew();
+
 private:
     Ui::MainWindow *ui;
-
-    void drawGrid(void);
 };
 
 #endif // MAINWINDOW_H
