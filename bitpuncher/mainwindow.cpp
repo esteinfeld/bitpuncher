@@ -9,6 +9,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "newpaintdialog.h"
+#include "exportdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -84,27 +85,26 @@ void MainWindow::onNextFrameClicked()
 void MainWindow::onActionNew()
 {
     NewPaintDialog dialog(this);
-    dialog.setModal(true);
 
-    if (dialog.exec()) {
-        initFrames(dialog.getFrames(), dialog.getCols(), dialog.getRows());
-        ui->bitmapCanvas->setSize(dialog.getCols(), dialog.getRows());
-        lastFrameIndex = 0;
-        ui->frameSlider->setMaximum(dialog.getFrames() - 1);
-        ui->frameSlider->setValue(0);
-
-        ui->copyToPrev->setEnabled(false);
-        if (dialog.getFrames() > 1) {
-            ui->copyToNext->setEnabled(true);
-        } else {
-            ui->copyToNext->setEnabled(false);
-        }
-
-        setCurrentFile("");
-        statusBar()->clearMessage();
-    } else {
-        std::cerr << "Rejected" << std::endl;
+    if (dialog.exec() == NewPaintDialog::Rejected) {
+        return;
     }
+
+    initFrames(dialog.getFrames(), dialog.getCols(), dialog.getRows());
+    ui->bitmapCanvas->setSize(dialog.getCols(), dialog.getRows());
+    lastFrameIndex = 0;
+    ui->frameSlider->setMaximum(dialog.getFrames() - 1);
+    ui->frameSlider->setValue(0);
+
+    ui->copyToPrev->setEnabled(false);
+    if (dialog.getFrames() > 1) {
+        ui->copyToNext->setEnabled(true);
+    } else {
+        ui->copyToNext->setEnabled(false);
+    }
+
+    setCurrentFile("");
+    statusBar()->clearMessage();
 }
 
 void MainWindow::setCurrentFile(QString fileName)
@@ -232,6 +232,17 @@ void MainWindow::onActionImport()
     img = converted;
     ui->bitmapCanvas->setBitmap(img);
     ui->bitmapCanvas->repaint();
+}
+
+void MainWindow::onActionExport()
+{
+    ExportDialog dialog(this);
+
+    if (dialog.exec() == NewPaintDialog::Rejected) {
+        return;
+    }
+
+
 }
 
 void MainWindow::onClearCurrentFrame()

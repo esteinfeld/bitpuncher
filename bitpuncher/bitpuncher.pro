@@ -15,11 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     bitmapcanvas.cpp \
-    newpaintdialog.cpp
+    newpaintdialog.cpp \
+    exportdialog.cpp
 
 HEADERS  += mainwindow.h \
     bitmapcanvas.h \
-    newpaintdialog.h
+    newpaintdialog.h \
+    exportdialog.h
 
 FORMS    += mainwindow.ui \
-    newpaintdialog.ui
+    newpaintdialog.ui \
+    exportdialog.ui

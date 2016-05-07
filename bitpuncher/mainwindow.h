@@ -26,6 +26,7 @@ public slots:
     void onActionSave();
     void onActionSaveAs();
     void onActionImport();
+    void onActionExport();
 
     void onPrevFrameClicked();
     void onNextFrameClicked();
