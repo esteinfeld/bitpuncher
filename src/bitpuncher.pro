@@ -26,3 +26,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     newpaintdialog.ui \
     exportdialog.ui
+
+ICON = bitpuncher.icns
+
