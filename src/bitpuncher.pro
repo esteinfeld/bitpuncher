@@ -28,4 +28,4 @@ FORMS    += mainwindow.ui \
     exportdialog.ui
 
 ICON = bitpuncher.icns
-
+RC_FILE = bitpuncher.rc
