@@ -262,7 +262,17 @@ void MainWindow::onActionExport()
         return;
     }
 
+    if (dialog.getFormat() == "PNG") {
+        QDir saveDir(dialog.getOutputFolder());
+        QVectorIterator<QImage> i(mFrames);
+        int index = 0;
 
+        while (i.hasNext()) {
+            QString fileName = QString("bpexport-%1.png").arg(index, 3, 10, QLatin1Char('0'));
+            i.next().save(saveDir.filePath(fileName));
+            ++index;
+        }
+    }
 }
 
 void MainWindow::onClearCurrentFrame()

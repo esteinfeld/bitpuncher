@@ -35,9 +35,14 @@ ExportDialog::~ExportDialog()
     delete ui;
 }
 
-QString ExportDialog::getFormat()
+const QString ExportDialog::getFormat()
 {
     return ui->format->currentText();
+}
+
+const QString ExportDialog::getOutputFolder()
+{
+    return ui->folderButton->text();
 }
 
 void ExportDialog::onFolderSelectButtonPressed()

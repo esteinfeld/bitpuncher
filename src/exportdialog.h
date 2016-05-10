@@ -35,8 +35,8 @@ public:
     explicit ExportDialog(QWidget *parent = 0);
     ~ExportDialog();
 
-    QString getFormat();
-    QString getOutputFolder();
+    const QString getFormat();
+    const QString getOutputFolder();
 
 public slots:
     void onFolderSelectButtonPressed();
