@@ -68,16 +68,32 @@ void BitmapCanvas::paintEvent(QPaintEvent *)
 
 void BitmapCanvas::mousePressEvent(QMouseEvent *event)
 {
-    int row = event->pos().y() / GRID_SIZE;
-    int col = event->pos().x() / GRID_SIZE;
-    std::cerr << "Mousy row=" << row << " y=" << col << std::endl;
+    mbMouseDragging = true;
+    mouseMoveEvent(event);
+}
 
-    if (event->button() == Qt::LeftButton) {
-        mBitmap.setPixel(col, row, 1);
-    } else if (event->button() == Qt::RightButton) {
-        mBitmap.setPixel(col, row, 0);
+void BitmapCanvas::mouseMoveEvent(QMouseEvent *event)
+{
+    int col = event->pos().x() / GRID_SIZE;
+    int row = event->pos().y() / GRID_SIZE;
+
+    if (col >= mBitmap.size().width() || row >= mBitmap.size().height() ||
+            col < 0 || row < 0) {
+        return;
     }
-    repaint();
+
+    if ((event->buttons() & Qt::LeftButton) && mBitmap.pixelIndex(col, row) == 0) {
+        mBitmap.setPixel(col, row, 1);
+        repaint();
+    } else if ((event->buttons() & Qt::RightButton) && mBitmap.pixelIndex(col, row) == 1) {
+        mBitmap.setPixel(col, row, 0);
+        repaint();
+    }
+}
+
+void BitmapCanvas::mouseReleaseEvent(QMouseEvent *event)
+{
+    mbMouseDragging = false;
 }
 
 void BitmapCanvas::setSize(int cols, int rows)

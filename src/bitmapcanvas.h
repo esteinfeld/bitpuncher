@@ -41,6 +41,8 @@ public:
 protected:
     virtual void paintEvent(QPaintEvent *);
     virtual void mousePressEvent(QMouseEvent *);
+    virtual void mouseMoveEvent(QMouseEvent *);
+    virtual void mouseReleaseEvent(QMouseEvent *);
 
 signals:
 
@@ -49,6 +51,8 @@ public slots:
 private:
     int mCols;
     int mRows;
+
+    bool mbMouseDragging;
 
     QImage mBitmap;
 };
