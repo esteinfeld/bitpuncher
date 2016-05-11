@@ -16,16 +16,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     bitmapcanvas.cpp \
     newpaintdialog.cpp \
-    exportdialog.cpp
+    exportwizard.cpp
 
 HEADERS  += mainwindow.h \
     bitmapcanvas.h \
     newpaintdialog.h \
-    exportdialog.h
+    exportwizard.h
 
 FORMS    += mainwindow.ui \
-    newpaintdialog.ui \
-    exportdialog.ui
+    newpaintdialog.ui
 
 ICON = bitpuncher.icns
 RC_FILE = bitpuncher.rc

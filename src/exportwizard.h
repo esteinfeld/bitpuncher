@@ -18,31 +18,59 @@
 
 */
 
-#ifndef EXPORTDIALOG_H
-#define EXPORTDIALOG_H
+#ifndef EXPORTWIZARD_H
+#define EXPORTWIZARD_H
 
-#include <QDialog>
+#include <QWizard>
+#include <QWizardPage>
+#include <QLineEdit>
+#include <QRadioButton>
+#include <QCheckBox>
+#include <QVector>
+#include <QImage>
 
-namespace Ui {
-class ExportDialog;
-}
-
-class ExportDialog : public QDialog
+class FormatPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit ExportDialog(QWidget *parent = 0);
-    ~ExportDialog();
-
-    const QString getFormat();
-    const QString getOutputFolder();
-
-public slots:
-    void onFolderSelectButtonPressed();
-
-private:
-    Ui::ExportDialog *ui;
+    FormatPage(QWidget *parent = 0);
 };
 
-#endif // EXPORTDIALOG_H
+class PathPage : public QWizardPage
+{
+    Q_OBJECT
+
+public:
+    PathPage(QWidget *parent = 0);
+    virtual void initializePage();
+
+private slots:
+    void onBrowsePressed();
+
+private:
+    QLineEdit *path;
+    QCheckBox *cbOverwrite;
+};
+
+
+class ExportWizard : public QWizard
+{
+    Q_OBJECT
+public:
+    explicit ExportWizard(QVector<QImage> &frames, int currentFrame, QWidget *parent = 0);
+
+signals:
+
+public slots:
+    virtual void accept();
+
+private:
+    QVector<QImage> mFrames;
+    int mCurrentFrame;
+
+    void exportPng();
+    void exportCHeader();
+};
+
+#endif // EXPORTWIZARD_H

@@ -30,7 +30,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "newpaintdialog.h"
-#include "exportdialog.h"
+#include "exportwizard.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -300,23 +300,10 @@ void MainWindow::onActionImport()
 
 void MainWindow::onActionExport()
 {
-    ExportDialog dialog(this);
+    copyCurrentFrame(lastFrameIndex);
 
-    if (dialog.exec() == NewPaintDialog::Rejected) {
-        return;
-    }
-
-    if (dialog.getFormat() == "PNG") {
-        QDir saveDir(dialog.getOutputFolder());
-        QVectorIterator<QImage> i(mFrames);
-        int index = 0;
-
-        while (i.hasNext()) {
-            QString fileName = QString("bpexport-%1.png").arg(index, 3, 10, QLatin1Char('0'));
-            i.next().save(saveDir.filePath(fileName));
-            ++index;
-        }
-    }
+    ExportWizard wizard(mFrames, lastFrameIndex, this);
+    wizard.exec();
 }
 
 void MainWindow::onClearCurrentFrame()
