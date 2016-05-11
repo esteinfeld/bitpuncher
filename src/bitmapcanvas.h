@@ -45,6 +45,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *);
 
 signals:
+    void canvasModified();
 
 public slots:
 

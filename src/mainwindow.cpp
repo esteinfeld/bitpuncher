@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QMessageBox>
+#include <QCloseEvent>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -34,9 +35,12 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    lastFrameIndex(0)
+    lastFrameIndex(0),
+    isDirty(false)
 {
     ui->setupUi(this);
+
+    QObject::connect(ui->bitmapCanvas, SIGNAL(canvasModified()), this, SLOT(setDirty()));
 
     // TODO: prevent the initial dialog to abort, it'd leave a bunch of uninitialised members
     onActionNew();
@@ -45,6 +49,44 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setDirty()
+{
+    isDirty = true;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    std::cerr << "closeEvent" << std::endl;
+
+    if (isDirty) {
+        QMessageBox warning;
+        warning.setText("The canvas has been modified");
+        warning.setInformativeText("Do you want to save the changes?");
+        warning.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+        warning.setDefaultButton(QMessageBox::Save);
+        warning.setIcon(QMessageBox::Warning);
+
+        switch (warning.exec()) {
+            case QMessageBox::Save:
+                onActionSave();
+                event->accept();
+                break;
+
+            case QMessageBox::Discard:
+                event->accept();
+                break;
+
+            case QMessageBox::Cancel:
+                event->ignore();
+                break;
+        }
+    } else {
+        event->accept();
+    }
+
+    isDirty = false;
 }
 
 void MainWindow::copyCurrentFrame(int target)
@@ -204,6 +246,8 @@ void MainWindow::saveToFile(QString fileName)
 
     statusBar()->showMessage("Successfully saved " + QString::number(ui->frameSlider->maximum() + 1) +
                              " frames to " + fileName, 5000);
+
+    isDirty = false;
 }
 
 void MainWindow::onActionSaveAs()

@@ -82,6 +82,8 @@ void BitmapCanvas::mouseMoveEvent(QMouseEvent *event)
         return;
     }
 
+    emit canvasModified();
+
     if ((event->buttons() & Qt::LeftButton) && mBitmap.pixelIndex(col, row) == 0) {
         mBitmap.setPixel(col, row, 1);
         repaint();

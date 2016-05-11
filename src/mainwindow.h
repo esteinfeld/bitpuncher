@@ -55,16 +55,21 @@ public slots:
     void onCopyToPrevFrame();
 
 private:
+    virtual void closeEvent(QCloseEvent *);
     void copyCurrentFrame(int);
     void restoreFrame(int);
     void initFrames(int, int, int);
+    void saveToFile(QString fileName);
+    void setCurrentFile(QString fileName);
 
     Ui::MainWindow *ui;
     QVector<QImage> mFrames;
     int lastFrameIndex;
     QString currentFile;
-    void saveToFile(QString fileName);
-    void setCurrentFile(QString fileName);
+    bool isDirty;
+
+private slots:
+    void setDirty();
 };
 
 #endif // MAINWINDOW_H
