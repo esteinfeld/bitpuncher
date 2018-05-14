@@ -27,7 +27,7 @@
 
 #define DEFAULT_COLS        50
 #define DEFAULT_ROWS        8
-#define GRID_SIZE           20
+#define GRID_SIZE           40
 
 BitmapCanvas::BitmapCanvas(QWidget *parent) : QWidget(parent),
     mCols(DEFAULT_COLS),
